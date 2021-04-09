@@ -17,7 +17,7 @@ RUN make LDFLAGS="--static" nsenter
 
 # Final image
 FROM scratch
-
+LABEL org.opencontainers.image.source https://github.com/BitProcessor/nsenter
 COPY --from=builder /code/util-linux/nsenter /
 
 ENTRYPOINT ["/nsenter"]
