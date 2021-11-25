@@ -1,23 +1,9 @@
-FROM debian:buster as builder
+FROM alpine:3.15.0
 
-# intall gcc and supporting packages
-RUN apt-get update && apt-get install -yq make gcc gettext autopoint bison libtool automake pkg-config
+RUN apk update && apk upgrade && \
+    apk add util-linux && \
+    rm -rf /var/cache/apk/*
 
-WORKDIR /code
-
-# download util-linux sources
-ARG UTIL_LINUX_VER
-ADD https://github.com/karelzak/util-linux/archive/v${UTIL_LINUX_VER}.tar.gz .
-RUN tar -xf v${UTIL_LINUX_VER}.tar.gz && mv util-linux-${UTIL_LINUX_VER} util-linux
-
-# make static version
-WORKDIR /code/util-linux
-RUN ./autogen.sh && ./configure
-RUN make LDFLAGS="--static" nsenter
-
-# Final image
-FROM scratch
 LABEL org.opencontainers.image.source https://github.com/BitProcessor/nsenter
-COPY --from=builder /code/util-linux/nsenter /
 
-ENTRYPOINT ["/nsenter"]
+ENTRYPOINT ["/usr/bin/nsenter"]

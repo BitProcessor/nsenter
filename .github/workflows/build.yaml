@@ -17,12 +17,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Get util-linux version
-      id: get_util_linux
-      run: |
-        version=$(curl --silent https://api.github.com/repos/karelzak/util-linux/tags | jq -r '.[0].name' | sed -e 's/^v//')
-        echo "::debug::get util-linux version ${version}"
-        echo "::set-output name=version::${version}"
+    # - name: Get util-linux version
+    #   id: get_util_linux
+    #   run: |
+    #     version=$(curl --silent https://api.github.com/repos/karelzak/util-linux/tags | jq -r '.[0].name' | sed -e 's/^v//')
+    #     echo "::debug::get util-linux version ${version}"
+    #     echo "::set-output name=version::${version}"
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
@@ -41,7 +41,7 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        build-args: UTIL_LINUX_VER=${{ steps.get_util_linux.outputs.version }}
+        # build-args: UTIL_LINUX_VER=${{ steps.get_util_linux.outputs.version }}
         platforms: linux/amd64,linux/arm64
         tags: |
           ghcr.io/bitprocessor/nsenter:latest
