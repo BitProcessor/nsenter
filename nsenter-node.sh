@@ -25,8 +25,8 @@ kubectl run ${podName:?} --restart=Never -it --rm --image overriden --overrides 
       {
         "name": "nsenter",
         "image": "ghcr.io/bitprocessor/nsenter:latest",
-        "command": [
-          "/nsenter", "-m", "-u", "-i", "-n", "-p", "-C", "-r", "-w", "--target=1", "--", "su", "-"
+        "args": [
+          "-m", "-u", "-i", "-n", "-p", "-C", "-r", "-w", "--target=1", "--", "su", "-"
         ],
         "stdin": true,
         "tty": true,
