@@ -1,5 +1,4 @@
 #!/bin/sh
-set -x
 
 node=${1}
 nodeName=$(kubectl get node ${node} -o template --template='{{index .metadata.labels "kubernetes.io/hostname"}}')
@@ -12,6 +11,7 @@ podName=${podName//./-}
 # truncate podName to 63 characters which is the kubernetes max length for it
 podName=${podName:0:63}
 
+echo "Pod name: ${podName:?}"
 kubectl run ${podName:?} --restart=Never -it --rm --image overriden --overrides '
 {
   "spec": {
